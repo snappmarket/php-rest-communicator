@@ -1,0 +1,12 @@
+{
+    "name": "snappmarket/php-rest-communicator",
+    "authors": [
+        {
+            "name": "EmiTis Yousefi",
+            "email": "emitis89@gmail.com"
+        }
+    ],
+    "require": {},
+    "minimum-stability": "dev",
+    "prefer-stable": false
+}
