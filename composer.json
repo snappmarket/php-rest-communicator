@@ -6,7 +6,16 @@
             "email": "emitis89@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "php": ">=7.1",
+        "guzzlehttp/guzzle": ">=6.0",
+        "psr/log": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SnappMarket\\": "src/"
+        }
+    },
     "minimum-stability": "dev",
     "prefer-stable": false
 }
