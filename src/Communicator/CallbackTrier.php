@@ -11,6 +11,10 @@ class CallbackTrier
     /** @var Closure */
     protected $callback;
 
+
+    /** @var Closure|null */
+    protected $fallback;
+
     /** @var int */
     protected $tries;
 
@@ -31,6 +35,16 @@ class CallbackTrier
 
 
     /**
+     * @param Closure $fallback
+     */
+    public function setFallback(Closure $fallback)
+    {
+        $this->fallback = $fallback;
+    }
+
+
+
+    /**
      * Does the try for the $callback property in a number of $tries property.
      *
      * @param int $tried
@@ -41,12 +55,17 @@ class CallbackTrier
     public function doTry(int $tried = 1)
     {
         try {
-            $function = $this->callback;
+            $callback = $this->callback;
 
-            return $function();
+            return $callback();
         } catch (Exception $exception) {
+            if ($this->fallback) {
+                $fallback = $this->fallback;
+                $fallback($exception);
+            }
+
             if ($tried < $this->tries) {
-                $this->doTry($tried + 1);
+                return $this->doTry($tried + 1);
             }
 
             throw $exception;
