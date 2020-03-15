@@ -5,6 +5,7 @@ namespace SnappMarket\Communicator;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
@@ -49,21 +50,21 @@ class Communicator implements LoggerAwareInterface
 
 
 
-    public function post(string $uri, array $parameters = [], array $headers = [])
+    public function post(string $uri, array $parameters = [], array $headers = []): ResponseInterface
     {
         return $this->request(static::METHOD_POST, $uri, $parameters, $headers);
     }
 
 
 
-    public function get(string $uri, array $parameters = [], array $headers = [])
+    public function get(string $uri, array $parameters = [], array $headers = []): ResponseInterface
     {
         return $this->request(static::METHOD_GET, $uri, $parameters, $headers);
     }
 
 
 
-    public function request(string $method, string $uri, array $parameters = [], array $headers = [])
+    public function request(string $method, string $uri, array $parameters = [], array $headers = []): ResponseInterface
     {
         $options = [
              'json'    => $parameters,
@@ -87,7 +88,7 @@ class Communicator implements LoggerAwareInterface
         $this->logResponse($uri, $response);
 
 
-        return json_decode($response->getBody()->__toString(), true);
+        return $response;
     }
 
 
