@@ -82,12 +82,12 @@ class Communicator implements LoggerAwareInterface
 
 
         $trier->setFallback(function (Exception $exception) use ($uri) {
-            //$this->logFailure($uri, $exception);
+            $this->logFailure($uri, $exception);
         });
 
 
         $response = $trier->doTry();
-        //$this->logResponse($uri, $response);
+        $this->logResponse($uri, $response);
 
 
         return $response;
