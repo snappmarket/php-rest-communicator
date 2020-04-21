@@ -9,15 +9,26 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
+use SnappMarket\Communicator\SmRequest\RequestFactory;
+use SnappMarket\Exceptions\RequestMethodNotFoundException;
 
+/**
+ * Class Communicator
+ * @package SnappMarket\Communicator
+ */
 class Communicator implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    const DEFAULT_TRIES_VALUE = 1;
-
-    const METHOD_POST = 'POST';
-    const METHOD_GET  = 'GET';
+    public const DEFAULT_TRIES_VALUE     = 1;
+    public const METHOD_POST             = 'POST';
+    public const METHOD_GET              = 'GET';
+    public const METHOD_PUT              = 'PUT';
+    public const METHOD_UPDATE           = 'UPDATE';
+    public const METHOD_DELETE           = 'DELETE';
+    public const APPLICATION_JSON        = 'application/json';
+    public const MULTIPART_FORM_DATA     = 'multipart/form-data';
+    public const X_WWW_FORM_URLENCODED   = 'application/x-www-form-urlencoded';
 
 
     /** @var Client */
@@ -32,7 +43,12 @@ class Communicator implements LoggerAwareInterface
     protected $tries = self::DEFAULT_TRIES_VALUE;
 
 
-
+    /**
+     * Communicator constructor.
+     * @param string $baseUri
+     * @param array $headers
+     * @param LoggerInterface|null $logger
+     */
     public function __construct(string $baseUri, array $headers = [], ?LoggerInterface $logger = null)
     {
         $options = [
@@ -48,58 +64,50 @@ class Communicator implements LoggerAwareInterface
         }
     }
 
-
-
-    public function post(string $uri, array $parameters = [], array $headers = []): ResponseInterface
-    {
-        return $this->request(static::METHOD_POST, $uri, $parameters, $headers);
-    }
-
-
-
-    public function get(string $uri, array $parameters = [], array $headers = []): ResponseInterface
-    {
-        return $this->request(static::METHOD_GET, $uri, $parameters, $headers);
-    }
-
-
-
+    /**
+     * @param string $method
+     * @param string $uri
+     * @param array $parameters
+     * @param array $headers
+     * @return ResponseInterface
+     * @throws Exception
+     */
     public function request(string $method, string $uri, array $parameters = [], array $headers = []): ResponseInterface
     {
-        $options = [
-             'json'    => $parameters,
-             'headers' => $headers,
-        ];
 
-
-        $trier = new CallbackTrier(function () use ($method, $uri, $options) {
-            $this->logRequest($method, $uri, $options);
-
-            return $this->client->request($method, $uri, $options);
+        $trier = new CallbackTrier(function () use ($method, $uri, $parameters, $headers) {
+            //$this->logRequest($method, $uri, ['parameters'=>$parameters,'headers'=>$headers]);
+            return RequestFactory::make($method, $this->client)->execute($uri,$parameters);
         }, $this->tries);
 
 
-        $trier->setFallback(function (Exception $exception) use ($method, $uri, $options) {
-            $this->logFailure($uri, $exception);
+        $trier->setFallback(function (Exception $exception) use ($uri) {
+            //$this->logFailure($uri, $exception);
         });
 
 
         $response = $trier->doTry();
-        $this->logResponse($uri, $response);
+        //$this->logResponse($uri, $response);
 
 
         return $response;
     }
 
 
-
+    /**
+     * @param int $tries
+     */
     public function setTries(int $tries)
     {
         $this->tries = $tries;
     }
 
 
-
+    /**
+     * @param string $method
+     * @param string $uri
+     * @param array $options
+     */
     protected function logRequest(string $method, string $uri, array $options = [])
     {
         $context = [
@@ -112,14 +120,19 @@ class Communicator implements LoggerAwareInterface
     }
 
 
-
+    /**
+     * @return string
+     */
     protected function getRequestLoggingTemplate()
     {
         return 'Communication request to `{url}` is being sent with the `{method}` method: {options}';
     }
 
 
-
+    /**
+     * @param string $uri
+     * @param Exception $exception
+     */
     protected function logFailure(string $uri, Exception $exception)
     {
         $context = [
@@ -131,14 +144,19 @@ class Communicator implements LoggerAwareInterface
     }
 
 
-
+    /**
+     * @return string
+     */
     protected function getFailureLoggingTemplate()
     {
         return 'Communication request to `{url}` has been failed with exception: {exception}';
     }
 
 
-
+    /**
+     * @param string $uri
+     * @param Response $response
+     */
     protected function logResponse(string $uri, Response $response)
     {
         $context = [
@@ -150,9 +168,11 @@ class Communicator implements LoggerAwareInterface
     }
 
 
-
+    /**
+     * @return string
+     */
     protected function getResponseLoggingTemplate()
     {
-        return 'Communication response from `{url}` has been recieved: {body}';
+        return 'Communication response from `{url}` has been received: {body}';
     }
 }

@@ -10,9 +10,13 @@
         "php": ">=7.1",
         "guzzlehttp/guzzle": ">=6.0",
         "psr/log": "^1.0",
-        "psr/http-message": "^1.0"
+        "psr/http-message": "^1.0",
+        "ext-json": "*"
     },
     "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
         "psr-4": {
             "SnappMarket\\": "src/"
         }
