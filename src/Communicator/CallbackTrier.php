@@ -6,6 +6,10 @@ namespace SnappMarket\Communicator;
 use Closure;
 use Exception;
 
+/**
+ * Class CallbackTrier
+ * @package SnappMarket\Communicator
+ */
 class CallbackTrier
 {
     /** @var Closure */
