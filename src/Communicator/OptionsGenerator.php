@@ -1,14 +1,20 @@
 <?php
 
-use SnappMarket\Communicator\Communicator;
 
-if (! function_exists('generate_options')) {
+namespace SnappMarket\Communicator;
+
+/**
+ * Trait OptionsGenerator
+ * @package SnappMarket\Communicator\SmRequest
+ */
+trait OptionsGenerator
+{
     /**
      * @param string $content_type
      * @param array $parameters
-     * @return array|array[]
+     * @return array
      */
-    function generate_options(string $content_type, array $parameters)
+    public function generateOptions(string $content_type, array $parameters)
     {
         switch ($content_type){
             case Communicator::APPLICATION_JSON:

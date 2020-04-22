@@ -7,8 +7,8 @@ namespace SnappMarket\Communicator\SmRequest;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 use SnappMarket\Communicator\Communicator;
+use SnappMarket\Communicator\OptionsGenerator;
 
 /**
  * Class Post
@@ -16,6 +16,8 @@ use SnappMarket\Communicator\Communicator;
  */
 class Post implements SmRequestInterface
 {
+    use OptionsGenerator;
+
     protected $client;
 
     /**
@@ -37,7 +39,7 @@ class Post implements SmRequestInterface
     {
         $content_type = $headers['content-type'] ?? Communicator::APPLICATION_JSON;
 
-        $options = generate_options($content_type,$parameters);
+        $options = $this->generateOptions($content_type,$parameters);
         return $this->client->request(Communicator::METHOD_POST, $uri, $options);
     }
 }

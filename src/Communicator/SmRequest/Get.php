@@ -7,7 +7,6 @@ namespace SnappMarket\Communicator\SmRequest;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 use SnappMarket\Communicator\Communicator;
 
 /**
