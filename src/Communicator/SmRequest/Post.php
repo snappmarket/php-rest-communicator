@@ -37,7 +37,7 @@ class Post implements SmRequestInterface
      */
     public function execute(string $uri, array $parameters = []): ResponseInterface
     {
-        $content_type = $headers['content-type'] ?? Communicator::APPLICATION_JSON;
+        $content_type = $headers['content-type'] ?? Communicator::X_WWW_FORM_URLENCODED;
 
         $options = $this->generateOptions($content_type,$parameters);
         return $this->client->request(Communicator::METHOD_POST, $uri, $options);
