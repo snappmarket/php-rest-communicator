@@ -32,7 +32,7 @@ class Get implements SmRequestInterface
      * @return ResponseInterface
      * @throws GuzzleException
      */
-    public function execute(string $uri, array $parameters = []): ResponseInterface
+    public function execute(string $uri, array $parameters = [], array $headers = []): ResponseInterface
     {
         $options = [
             'query' => $parameters

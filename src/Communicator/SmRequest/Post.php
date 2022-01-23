@@ -35,9 +35,9 @@ class Post implements SmRequestInterface
      * @return ResponseInterface
      * @throws GuzzleException
      */
-    public function execute(string $uri, array $parameters = []): ResponseInterface
+    public function execute(string $uri, array $parameters = [], array $headers = []): ResponseInterface
     {
-        $content_type = $headers['content-type'] ?? Communicator::X_WWW_FORM_URLENCODED;
+        $content_type = $headers['Content-Type'] ?? Communicator::X_WWW_FORM_URLENCODED;
 
         $options = $this->generateOptions($content_type,$parameters);
         return $this->client->request(Communicator::METHOD_POST, $uri, $options);

@@ -18,13 +18,13 @@ trait OptionsGenerator
     {
         switch ($content_type){
             case Communicator::APPLICATION_JSON:
-                return ['json' => json_encode($parameters)];
+                return ['json' => $parameters];
             case Communicator::X_WWW_FORM_URLENCODED:
                 return ['form_params' => $parameters];
             case Communicator::MULTIPART_FORM_DATA:
                 return ['multipart' => $parameters];
             default:
-                return ['json' => json_encode($parameters)];
+                return ['json' => $parameters];
         }
     }
 }

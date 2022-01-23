@@ -17,5 +17,5 @@ interface SmRequestInterface
      * @param array $parameters
      * @return mixed
      */
-    public function execute(string $uri, array $parameters = []): ResponseInterface;
+    public function execute(string $uri, array $parameters = [], array $headers = []): ResponseInterface;
 }
