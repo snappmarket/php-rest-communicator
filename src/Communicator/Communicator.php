@@ -76,7 +76,7 @@ class Communicator implements LoggerAwareInterface
 
         $trier = new CallbackTrier(function () use ($method, $uri, $parameters, $headers) {
             $this->logRequest($method, $uri, ['parameters'=>$parameters,'headers'=>$headers]);
-            return RequestFactory::make($method, $this->client)->execute($uri,$parameters);
+            return RequestFactory::make($method, $this->client)->execute($uri,$parameters, $headers);
         }, $this->tries);
 
 
