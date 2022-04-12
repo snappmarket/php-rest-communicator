@@ -5,10 +5,15 @@ namespace SnappMarket\Communicator\SmRequest;
 
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use SnappMarket\Communicator\Communicator;
 use SnappMarket\Communicator\OptionsGenerator;
 
+/**
+ * Class Patch
+ * @package SnappMarket\Communicator\SmRequest
+ */
 class Patch implements SmRequestInterface
 {
     use OptionsGenerator;
@@ -16,7 +21,7 @@ class Patch implements SmRequestInterface
     protected $client;
 
     /**
-     * Post constructor.
+     * Patch constructor.
      * @param Client $client
      */
     public function __construct(Client $client)
@@ -34,7 +39,7 @@ class Patch implements SmRequestInterface
     {
         $content_type = $headers['Content-Type'] ?? Communicator::X_WWW_FORM_URLENCODED;
 
-        $options = $this->generateOptions($content_type, $parameters);
+        $options = $this->generateOptions($content_type,$parameters);
         return $this->client->request(Communicator::METHOD_PATCH, $uri, $options);
     }
 }

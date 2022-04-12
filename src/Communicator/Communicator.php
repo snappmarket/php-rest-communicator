@@ -23,9 +23,9 @@ class Communicator implements LoggerAwareInterface
     public const METHOD_POST             = 'POST';
     public const METHOD_GET              = 'GET';
     public const METHOD_PUT              = 'PUT';
-    public const METHOD_PATCH            = 'PATCH';
     public const METHOD_UPDATE           = 'UPDATE';
     public const METHOD_DELETE           = 'DELETE';
+    public const METHOD_PATCH            = 'PATCH';
     public const APPLICATION_JSON        = 'application/json';
     public const MULTIPART_FORM_DATA     = 'multipart/form-data';
     public const X_WWW_FORM_URLENCODED   = 'application/x-www-form-urlencoded';
