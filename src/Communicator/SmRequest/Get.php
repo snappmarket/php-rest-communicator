@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use SnappMarket\Communicator\Communicator;
+use GuzzleHttp\RequestOptions;
 
 /**
  * Class Get
@@ -37,6 +38,7 @@ class Get implements SmRequestInterface
         $options = [
             'query' => $parameters
         ];
+        $options[RequestOptions::HEADERS] = $headers;
         return $this->client->request(Communicator::METHOD_GET, $uri, $options);
     }
 }
