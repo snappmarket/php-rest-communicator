@@ -49,12 +49,15 @@ class Communicator implements LoggerAwareInterface
      * @param array $headers
      * @param LoggerInterface|null $logger
      */
-    public function __construct(string $baseUri, array $headers = [], ?LoggerInterface $logger = null)
+    public function __construct(string $baseUri, array $headers = [], ?LoggerInterface $logger = null, $extraOptions = [])
     {
         $options = [
              'base_uri' => $baseUri,
              'headers'  => $headers,
         ];
+        if (!empty($extraOptions)) {
+            $options = array_merge($options, $extraOptions);
+        }
 
         $this->baseUri = $baseUri;
         $this->client  = new Client($options);
