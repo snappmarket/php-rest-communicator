@@ -54,6 +54,8 @@ class Communicator implements LoggerAwareInterface
         $options = [
              'base_uri' => $baseUri,
              'headers'  => $headers,
+             'timeout' => 5,
+             'connect_timeout' => 5,
         ];
         if (!empty($extraOptions)) {
             $options = array_merge($options, $extraOptions);
@@ -141,6 +143,7 @@ class Communicator implements LoggerAwareInterface
         $context = [
              'url'       => $this->baseUri . $uri,
              'exception' => get_class($exception),
+             'exception_message' => $exception->getMessage(),
         ];
 
         $this->logger->error($this->getFailureLoggingTemplate(), $context);
