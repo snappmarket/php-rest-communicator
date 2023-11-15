@@ -54,8 +54,8 @@ class Communicator implements LoggerAwareInterface
         $options = [
              'base_uri' => $baseUri,
              'headers'  => $headers,
-             'timeout' => 5,
-             'connect_timeout' => 5,
+             'timeout' => 4,
+             'connect_timeout' => 4,
         ];
         if (!empty($extraOptions)) {
             $options = array_merge($options, $extraOptions);
